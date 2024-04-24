@@ -1,0 +1,26 @@
+
+.presentation{
+    height: 80vh;
+    width: 100%;
+    background-image: url("../Assets/statistiques.jpg");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color:white;
+    text-shadow: 1px 1px black;
+}
+.presentation {
+    font-size: 25px;
+}
+.cadre{
+    height:50vh ;
+    width:40% ;
+    justify-content: center; 
+    display: flex;
+}
+
+
+
