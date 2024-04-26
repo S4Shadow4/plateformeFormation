@@ -1,10 +1,9 @@
-const express= require("express");
-const addFormationCtrl= require("../Controllers/addFormationController");
-const verifys = require("../middleware/verifyjwts-gerant");
+const express = require('express');
+const multer = require('multer');
+const router = express.Router();
+const multerConfig = require('../multer-config');
+const addFormationController = require('../Controllers/addFormationController');
 
-const router =  express.Router();
-
-router.post("/insert",verifys,addFormationCtrl.addFormation);
-router.post("/select",verifys,addFormationCtrl.getCours);
+router.post('/register', multerConfig, addFormationController.addFormation);
 
 module.exports = router;

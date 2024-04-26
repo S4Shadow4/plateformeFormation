@@ -1,96 +1,61 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { useState } from 'react'
-import style from "../styles/AjoutFormation.module.css"
+import React, { useState } from 'react';
+import axios from 'axios';
 
+const AjoutFormation = () => {
+    const [titreInput, setTitreInput] = useState("");
+    const [imageInput, setImageInput] = useState("");
+    const [debutInput, setDebutInput] = useState("");
+    const [finInput, setFinInput] = useState("");
+    const [descriptionInput, setDescriptionInput] = useState("");
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
+        const formData = new FormData();
+        formData.append('titre', titreInput);
+        formData.append('file', imageInput);
+        formData.append('debut', debutInput);
+        formData.append('fin', finInput);
+        formData.append('description', descriptionInput);
 
-const AjoutFormation =({FormationList, setFormationList})=>{
-    let [FormationForm, setFormationForm]= useState(false);
-    let [idformInput, setidformInput]= useState("");
-    let [nomformInput, setNomformInput]= useState("");
-    let [prixformInput, setPrixformInput]= useState("");
-    let [duréformInput, setDuréformInput]= useState("");
-    let [descformInput, setDescformInput]= useState("");
-    let handleFormationForm = ()=>{
-        setFormationForm((prevState)=> !prevState)
-    }
-    let FormationsForm = FormationForm &&(
-        <form className={style.formation} onSubmit={(e)=>{
-            e.preventDefault();
-            let formation = {
-                nom:nomformInput,
-                durée: duréformInput,
-                prix: Number(prixformInput),
-                description: descformInput
-            };
-            console.log(formation);
-            let newList = [...FormationList];
-            newList.push(formation);
-            setFormationList(newList);
+        try {
+            const response = await axios.post("http://localhost:5000/addFormation/register", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error(error.response);
+        }
+    };
 
-            
-        }}>                            
-<table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <label htmlFor="nom">Nom :</label>
-                                        </td>
-                                        <td>
-                                            <input type="text" name="" id="nom" onInput={(e)=>setNomformInput(e.target.value)}/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label htmlFor="prix">Prix:</label>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="" id="prix" onInput={(e)=>setPrixformInput(e.target.value)} />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label htmlFor="description">Description:</label>
-                                        </td>
-                                        <td>
-                                            <input type="text" name="" id="description" onInput={(e)=>setDescformInput(e.target.value)} />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label htmlFor="durée">Durée:</label>
-                                        </td>
-                                        <td>
-                                            <input type="text" id="durée" onInput={(e)=>setDuréformInput(e.target.value)}/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={3}>
-                                            <button>ENREGISTRER</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-    )
+    return (
+        <div>
+            <h1>Ajouter une formation</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="titre">Titre de la formation:</label>
+                <input type="text" id='titre' required value={titreInput} onChange={(e) => setTitreInput(e.target.value)} />
+                <br />
 
-    return(
-        <>
-        <section>
-            <article>
-                <button onClick={handleFormationForm}>Ajouter Formation</button>
-                <p><NavLink to={"Formation"}> Formation</NavLink></p>
-            </article>
-            <section className={style.formation}>
-            {FormationsForm}
-            </section>
-        </section>
-       
-       
-        </>
-    )
+                <label htmlFor="file">Ajoutez une image:</label>
+                <input type="file" name='file' id='file' required onChange={(e) => setImageInput(e.target.files[0])} />
+                <br />
 
-}
-export default AjoutFormation
+                <label htmlFor="debut">Date et heure du début de la formation:</label>
+                <input type="datetime-local" id='debut' required value={debutInput} onChange={(e) => setDebutInput(e.target.value)} />
+                <br />
+
+                <label htmlFor="fin">Fin de la formation:</label>
+                <input type="date" id='date' required value={finInput} onChange={(e) => setFinInput(e.target.value)} />
+                <br />
+
+                <textarea name="description" id="" cols="30" rows="10" placeholder='Description' required value={descriptionInput} onChange={(e) => setDescriptionInput(e.target.value)}></textarea>
+                <br />
+                <button type='submit'>S'inscrire</button>
+            </form>
+        </div>
+    );
+};
+
+export default AjoutFormation;

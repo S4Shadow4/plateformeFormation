@@ -1,20 +1,20 @@
-const database = require('../Config/mysql');
+const dataBase = require("../Config/mysql");
 
-exports.addFormation = (req,res)=>{
-    const insertRoomQuery = "INSERT INTO `formation` (id_user,titre_formation, image_formation,debut_formation,fin_formation,description_formation,date_ajout_formation,) VALUES ( ?, ?)";
-
-    dataBase.query(insertRoomQuery, [
-        req.body.type_chambre,
-        req.body.prix_chambre
-    ], (error, result) => {
-        if (error) {
-            return res.status(401).json(error);
-        }
-        console.log("Chambre insérée avec succès");
-    });
-};
-
-exports.getCours = (req,res)=>{
-    res.json("You are the GOAT");
-
+exports.addFormation = (req, res) => {
+  let insertFormationQuery =
+    'INSERT INTO `formation` (titre_formation, image_formation, debut_formation, fin_formation,description_formation) VALUES(?,?,?,?,?) ';
+  dataBase.query(
+    insertFormationQuery,
+    [
+      req.body.titre,
+      `${req.protocol}://${req.get('host')}/files/${req.file.filename}`,
+      req.body.debut,
+      req.body.fin,
+      req.body.description,
+    ],
+    (error, result) => { 
+      if (error) throw error; 
+      res.status(201).json('save'); // Utilisez res.status(201) pour indiquer que la ressource a été créée
+    } 
+  );
 };

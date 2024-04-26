@@ -18,7 +18,7 @@ const Connexion = () => {
               console.log(res.data)
               localStorage.setItem("token", res.data.accessToken);
               localStorage.setItem("userName", `${userNameInput}`);
-              navigate("/profil"); 
+              navigate("/protected/profil"); 
             })
             .catch((error)=>{
               console.log (error);
